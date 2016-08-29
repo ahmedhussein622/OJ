@@ -1,0 +1,54 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<bitset>
+#include<set>
+using namespace std;
+
+int n,a[17],l;
+bitset<17>s;
+int pr[] = {2,3,5,7,11,13,17,19,23,29,31};
+set<int> prims (pr,pr+11);
+
+void solve(int t){
+
+    if(t > n && prims.find(a[1] + a[n]) != prims.end()){
+        for(l = 1; l < n; l++)
+            printf("%d ",a[l]);
+        printf("%d\n",a[l]);
+    }
+
+    int v = a[t-1];
+    for(int i = 2; i <= n; i++){
+        if(s[i] && prims.find(i + v) != prims.end()){
+            s[i] = 0;
+            a[t] = i;
+            solve(t + 1);
+            s[i] = 1;
+        }
+    }
+
+}
+
+int main(){
+
+
+    char z[5];
+    a[1] = 1;
+    int c = 1;
+    while(gets(z)){
+        if(c-1)
+            printf("\n");
+        sscanf(z,"%d",&n);
+        s.set();
+        s[1] = 0;
+        printf("Case %d:\n",c);
+        c++;
+        solve(2);
+
+    }
+
+
+    return 0;
+}
+

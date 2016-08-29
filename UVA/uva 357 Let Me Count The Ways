@@ -1,0 +1,68 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	// (penny: 1c, nickel: 5c, dime: 10c, quarter: 25c, half-dollar: 50c) 
+	static int coins[] = {1,5,10,25,50};
+	static long dp[] = new long[30010];
+	
+	public static void main(String[] args) throws Exception {
+		
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		dp[0] = 1;
+		int i,j;
+		for(i = 0 ;i < 5 ;i++) {
+			for(j = coins[i]; j < 30010; j++) {
+				dp[j] += dp[j-coins[i]];
+			}
+		}
+		
+		
+		String input = in.readLine();
+		long r;
+		while(input != null) {
+			
+			r = dp[Integer.parseInt(input)];
+			if(r == 1) {
+				out.printf("There is only 1 way to produce %s cents change.\n",input);
+			}
+			else
+				out.printf("There are %d ways to produce %s cents change.\n",r,input);
+			
+			input = in.readLine();
+		}
+		
+		in.close();
+		out.flush();
+		
+	}// end of main
+	
+	
+	
+	
+	
+	
+	
+	
+}// end of class

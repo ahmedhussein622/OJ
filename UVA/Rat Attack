@@ -1,0 +1,51 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<bitset>
+
+using namespace std;
+
+int main () {
+
+    int a[1025][1025];
+    bitset<1025> b[1025];
+    int k,d,n,x,y,m,i,j,maximum;
+    scanf("%d",&k);
+
+    while (k--) {
+
+        for (i = 0; i < 1025; i++)
+            b[i].reset();
+        scanf("%d\n%d",&d,&n);
+
+        while (n--) {
+
+            scanf("%d %d %d",&x,&y,&m);
+
+            for (i = x - d; i <= x + d ;i++)
+                for (j= y - d; j<= y + d; j++)
+                    if (i < 1025 && i > -1 && j < 1025 && j >-1){
+                        if(b[i][j])
+                            a[i][j] += m;
+                        else {
+                            b[i][j] = 1;
+                            a[i][j] = m;
+                        }
+                    }
+
+        }// end of while
+
+        maximum = -1;
+        for (i = 0; i < 1025;i++)
+            for (j = 0 ;j < 1025; j++)
+                if (b[i][j]&&a[i][j] > maximum){
+                    x = i;y = j;maximum = a[i][j];
+                }
+
+        printf("%d %d %d\n",x,y,maximum);
+
+    }// end of senarios
+
+    return 0 ;
+}

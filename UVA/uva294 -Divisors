@@ -1,0 +1,63 @@
+
+#include<stdio.h>
+#include<bitset>
+#include<vector>
+using namespace std;
+int i,j,m,n,r,q,l,pf,a,b,maximum,k,z;
+bitset<10000000> p;
+vector<int> primes;
+void prime(long long x){
+    p.set();
+    p[1] = 0;
+    p[2] = 1;
+    long long i,j;
+    for(i = 2; i < x; i++){
+        if(!p[i])
+            continue;
+        for(j = i*i; j < x; j+= i)
+            p[j] = 0;
+        primes.push_back(i);
+    }
+
+}
+
+int number(long long x) {
+
+    r = 1,l = 0,pf = primes[l];
+
+    while(x != 1 && pf*pf <= x ) {
+
+         q = 1;
+         while(x % pf == 0 ){
+            x/= pf;
+            q++;
+         }
+        r*= q;
+        pf = primes[++l];
+    }
+
+    if(x != 1)
+        r *= 2;
+
+    return r;
+}
+
+int main() {
+
+    prime(10000000);
+    scanf("%d",&z);
+    while(z--){
+        scanf("%d %d",&a,&b);
+        maximum = -1;
+        for(k = a; k <= b; k++){
+            m = number(k);
+            if(m > maximum){
+                maximum = m;
+                n = k;
+            }
+        }
+        printf("Between %d and %d, %d has a maximum of %d divisors.\n",a,b,n,maximum);
+    }
+    return 0;
+}
+

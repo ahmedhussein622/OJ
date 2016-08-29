@@ -1,0 +1,34 @@
+
+#include<stdio.h>
+#include<math.h>
+#include<algorithm>
+using namespace std;
+
+int m,n,i,j,x[510],c;
+long  double a,b;
+int gcd(int g, int h){return (h == 0 ? g : gcd(h,g%h));}
+
+int main() {
+
+    while(scanf("%d",&n) && n){
+        for(i = 0; i < n; i++)
+            scanf("%d",&x[i]);
+        sort(x,x+n);
+        c = 0;
+        for(i = 0; i < n; i++)
+            for(j = i+1; j < n; j++)
+                if(gcd(x[j],x[i]) == 1)
+                    c++;
+
+        if(c == 0){
+            printf("No estimate for this data set.\n");
+            continue;
+        }
+        n = n*(n-1)/2;
+        a = sqrt((6.0*n)/c);
+        printf("%0.6Lf\n",a);
+    }
+
+    return 0;
+}
+

@@ -1,0 +1,121 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <queue>
+#include <tuple>
+#define Infinity  999999999;
+
+using namespace std;
+
+int input[110][110];
+long long int dist[110][110];
+int parent[110][110];
+int n,m;
+
+struct compare {
+    bool operator()(tuple<int,int,long> a, tuple<int,int,long> b ) {
+        return get<2>(a) > get<2>(b);
+    }
+};
+
+priority_queue<tuple<int,int,long>,vector<tuple<int,int,long> >, compare> q;
+
+void relax(int r, int c, int nr, int nc, int d) {
+    long long int nd = d + input[nr][nc];
+    if(dist[nr][nc] > nd || (dist[nr][nc] == nd && parent[nr][nc] > r)) {
+        dist[nr][nc] = nd;
+        tuple<int,int,long> b(nr,nc,dist[nr][nc]);
+        parent[nr][nc] = r;
+        q.push(b);
+    }
+
+}
+
+void dijkstra() {
+
+    for(int i = 0; i < m; i++) {
+        for(int j = 0;j < n; j++) {
+            dist[i][j] = Infinity;
+        }
+    }
+
+
+    for(int i = 0;i < m; i++) {
+        dist[i][n-1] = input[i][n-1];
+        tuple<int,int,long> a(i,n-1,dist[i][n-1]);
+        q.push(a);
+    }
+
+
+    int r,c,nr,nc;
+    long long int d;
+    while(!q.empty()) {
+        tuple<int,int,long> a = q.top();
+        q.pop();
+        r = get<0>(a);
+        c = get<1>(a);
+        d = get<2>(a);
+        if(c == 0 || d != dist[r][c])
+            continue;
+
+
+        nc = c-1;
+        nr = (r+1) % m;
+        relax(r,c,nr,nc,d);
+
+        nr = r;
+        relax(r,c,nr,nc,d);
+
+        nr = r-1;
+        if(nr == -1)
+            nr = m-1;
+        relax(r,c,nr,nc,d);
+
+    }
+
+}
+
+int main() {
+
+    while(scanf("%d %d",&m,&n) != EOF) {
+        for(int i = 0; i < m; i++) {
+            for(int j = 0;j < n;j++) {
+                scanf("%d",&input[i][j]);
+            }
+        }
+
+        dijkstra();
+
+        int minRow = 0;
+        long long int mini = dist[0][0];
+
+        for(int i = 1; i < m; i++) {
+            if(mini > dist[i][0]) {
+                mini = dist[i][0];
+                minRow = i;
+            }
+        }
+
+        int order[200];
+        for(int i =0;i < n;i++) {
+            order[i] = minRow;
+            minRow = parent[minRow][i];
+        }
+        for(int i = 0; i < n-1; i++)
+            printf("%d ",order[i]+1);
+        printf("%d\n",order[n-1]+1);
+        printf("%lld\n",mini);
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+

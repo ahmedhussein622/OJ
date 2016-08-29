@@ -1,0 +1,166 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	static ArrayList<Node> graph = new ArrayList<Node>();
+	static int n,m,s,t;
+	
+	public static void main(String[] args) throws Exception {
+
+		
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		
+		
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		String input;
+		StringTokenizer token;
+		
+		
+		
+		int i,j,first,second,w;
+		int testCases;
+		int casesCounter = 0;
+		
+		
+		input = "";
+		while(input.length() == 0)
+			input = in.readLine();
+		token = new StringTokenizer(input);
+		testCases = Integer.parseInt(token.nextToken());
+		
+		while(casesCounter++ < testCases){
+			
+			input = "";
+			while(input.length() == 0)
+				input = in.readLine();
+			token = new StringTokenizer(input);
+			n = Integer.parseInt(token.nextToken());
+			m = Integer.parseInt(token.nextToken());
+			s = Integer.parseInt(token.nextToken());
+			t = Integer.parseInt(token.nextToken());
+			graph.clear();
+			for(i = 0 ; i <= n;i++) {
+				graph.add(new Node(i));
+			}
+			
+			Node n1,n2;
+			
+			for(j = 0; j < m; j++) {
+				
+				input = "";
+				while(input.length() == 0)
+					input = in.readLine();
+				token = new StringTokenizer(input);
+				first = Integer.parseInt(token.nextToken());
+				second = Integer.parseInt(token.nextToken());
+				w = Integer.parseInt(token.nextToken());
+				
+				n1 = graph.get(first);
+				n2 = graph.get(second);
+				
+				n1.edges.add(n2);
+				n1.weight.add(w);
+				
+				n2.edges.add(n1);
+				n2.weight.add(w);
+			}
+			
+			
+			dijkstra();
+			int r  = graph.get(t).distance;
+			if(r == 1000000000)
+				out.printf("Case #%d: unreachable\n",casesCounter);
+			else
+				out.printf("Case #%d: %d\n",casesCounter,r);
+		}
+		
+		out.flush();
+	}
+	
+	
+	
+	
+	
+	static void dijkstra() {
+		
+		
+		queue.clear();
+		
+		int i;
+		
+		
+		Node u = graph.get(s);
+		u.distance =  0;
+		for(i = 0; i <= n; i++)
+			queue.add(graph.get(i));
+		
+		
+		while(!queue.isEmpty()) {
+			
+			u = queue.poll();
+			if(u == graph.get(t))
+				break;
+			for(i = 0; i < u.edges.size();i++)
+				u.edges.get(i).relax(u,u.weight.get(i));
+			
+		}
+		
+	}
+	
+	
+	
+	static Comparator<Node> compare = new Comparator<Main.Node>() {
+
+		@Override
+		public int compare(Node o1, Node o2) {
+			return o1.distance - o2.distance;
+		}
+		
+	};
+	
+	
+	static PriorityQueue<Node> queue = new PriorityQueue<Node>(1,compare);
+	
+	
+	static class Node {
+		
+		int id;
+		ArrayList<Node> edges;
+		ArrayList<Integer> weight;
+		
+		int distance;
+		
+		Node(int i) {
+			id = i;
+			edges = new ArrayList<Node>();
+			weight = new ArrayList<Integer>();
+			distance = 1000000000;
+		}
+		
+		void relax(Node u, int w) {
+			if(u.distance+w < distance) {
+				queue.remove(this);
+				distance =  u.distance+w;
+				queue.add(this);
+			}
+		}
+		
+	}// end of Node
+	
+	
+}

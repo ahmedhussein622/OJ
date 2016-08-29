@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+
+using namespace std;
+
+
+int main() {
+
+    long long dp[300000];
+    int input[30010];
+    int n = 0;
+    int k;
+    int maximum = -1;
+    while(scanf("%d",&k) != EOF) {
+        input[n++] = k;
+        maximum = max(maximum,k);
+    }
+
+    //penny: 1c, nickel: 5c, dime: 10c, quarter: 25c, half-dollar: 50c)
+    int coin[] = {1,5,10,25,50};
+
+    dp[0] = 1;
+    for(int i = 0; i < 5; i++)
+        for(int j = coin[i]; j <= maximum;j++)
+            dp[j] += dp[j-coin[i]];
+
+    for(int i = 0; i < n; i++) {
+        if(dp[input[i]] == 1)
+            printf("There is only 1 way to produce %d cents change.\n",input[i]);
+        else
+            printf("There are %lld ways to produce %d cents change.\n",dp[input[i]],input[i]);
+    }
+
+
+
+    return 0;
+}
+
+
+
+
+
+
+

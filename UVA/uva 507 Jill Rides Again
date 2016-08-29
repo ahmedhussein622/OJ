@@ -1,0 +1,90 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	
+	public static void main(String[] args) throws Exception {
+		
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		int road[] = new int[20010];
+		int i,b,s,t,start,end,currentStart,currentEnd;
+		long maxSum,currentSum;
+		b = Integer.parseInt(new StringTokenizer(in.readLine()).nextToken());
+		t = 1;
+		
+		while(t <= b) {
+			
+			s = Integer.parseInt(new StringTokenizer(in.readLine()).nextToken());
+			s--;
+			for(i = 0; i < s; i++)
+				road[i] = Integer.parseInt(new StringTokenizer(in.readLine()).nextToken());
+			
+			start = -1;
+			end = -2;
+			maxSum = 0;
+			currentStart = 0;
+			currentSum = 0;
+			for(currentEnd = 0; currentEnd < s; currentEnd++) {
+				currentSum += road[currentEnd];
+				
+				if(currentSum == maxSum && end-start < currentEnd-currentStart) {
+						end = currentEnd;
+						start = currentStart;	
+				}
+				
+				else if (currentSum > maxSum) {
+					maxSum = currentSum;
+					start = currentStart;
+					end = currentEnd;
+				}
+				else if(currentSum < 0) {
+					currentSum = 0;
+					currentStart = currentEnd+1;
+				}
+			}
+			
+			if(maxSum > 0)
+				out.printf("The nicest part of route %d is between stops %d and %d\n",t,start+1,end+2);
+			else
+				out.printf("Route %d has no nice parts\n",t);
+			t++;
+			
+		}
+		
+		in.close();
+		out.flush();
+		
+	}// end of main
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}// end of class

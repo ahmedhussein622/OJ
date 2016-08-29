@@ -1,0 +1,102 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+
+	static int n;
+	static int m;
+	
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader in  = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		int testCases;
+		String input;
+		
+		input = in.readLine();
+		testCases = Integer.parseInt(input);
+		
+		String map[] = new String[100];
+		StringTokenizer token;
+		
+		in.readLine();
+		
+		int [][] visited = new int [100][100];
+		
+		while( testCases-- != 0) {
+			
+			m = 0;
+			input = in.readLine();
+			n = input.length();
+			while(input.charAt(0) == 'L' || input.charAt(0) == 'W') {// build the graph
+				map[m++] =  input;
+				input = in.readLine();
+			}
+			
+			while(input != null && input.length() != 0) {
+				
+				for(int i = 0 ; i < m; i++) {
+					for(int j = 0; j < n; j++)
+						visited[i][j] = 0;
+				}
+				
+				token = new StringTokenizer(input);
+				int y =  Integer.parseInt(token.nextToken()) - 1;
+				int x =  Integer.parseInt(token.nextToken()) - 1;
+				visited[y][x] = 1;
+				if(x >= 0 && x < n && y >= 0 && y < m)
+					out.println(DFS(map, x, y, visited));
+				else
+					out.println(0);
+				input = in.readLine();
+			}
+			
+			if(testCases != 0)
+				out.println();
+			
+		}// end of while
+		
+		out.flush();
+	}// end of main
+	
+	
+	static int dx[] = {1,1,1,0,0,-1,-1,-1};
+	static int dy[] = {-1,0,1,-1,1,-1,0,1};
+	
+	public static int DFS(String[]map, int x , int y, int[][]visited) {
+		
+		if(map[y].charAt(x) == 'L')
+			return 0;
+		
+		int result = 1;
+		
+		for(int i = 0; i < 8; i++) {
+			
+			if(x+dx[i] < n && x+dx[i] >= 0 && y+dy[i] < m && y+dy[i] >= 0 && visited[y+dy[i]][x+dx[i]] == 0
+					&& map[y+dy[i]].charAt(x+dx[i]) == 'W') {
+				
+				 visited[y+dy[i]][x+dx[i]] = 1;
+				 result += DFS(map, x+dx[i], y+dy[i], visited);
+			}
+			
+		}
+		
+		
+		return result;
+	}
+	
+}
+
+
+
+
+

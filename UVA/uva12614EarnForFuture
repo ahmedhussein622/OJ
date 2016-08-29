@@ -1,0 +1,57 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.text.TabExpander;
+
+
+
+public class Main {
+	
+	static int p[] = new int[10000010];
+	static ArrayList<Integer> primes = new ArrayList<Integer>();
+	
+	public static void main(String[] args) throws Exception {
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		int testCase = Integer.parseInt(in.readLine());
+		String input;
+		StringTokenizer token ;
+		int i,count,max;
+		count = 1;
+		while(count <= testCase) {
+			
+			in.readLine();
+			input = in.readLine();
+			token = new StringTokenizer(input);
+			max = Integer.MIN_VALUE;
+			while(token.hasMoreTokens()) {
+				max = Math.max(max,Integer.parseInt(token.nextToken()));
+			}
+			
+			
+			out.printf("Case %d: %d\n", count,max);
+			count++;
+		}
+		
+		out.flush();
+	}
+	
+	
+	
+	
+}

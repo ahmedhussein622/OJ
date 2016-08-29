@@ -1,0 +1,62 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+
+
+using namespace std;
+int input[200];
+int price,n,mx;
+
+
+int main () {
+
+    int tc;
+    scanf("%d",&tc);
+     int dp[30001];
+    while(tc--) {
+        scanf("%d",&price);
+        scanf("%d",&n);
+        mx = 0;
+        for(int i = 0; i < n; i++) {
+            scanf("%d",input+i);
+            mx += input[i];
+        }
+
+
+
+        dp[0] = 0;
+        for (int i=1; i<=30000; i++)
+            dp[i] = 9999999;
+
+        for(int i = 0; i <  n; i++)
+            for (int v = mx - input[i] - 1; v >= 0; v--)
+                if (dp[v] < 9999999)
+                    dp[v+input[i]] = min(dp[v+input[i]], dp[v]+1);
+
+
+        int ans = -1;
+        for(ans = price; ans <= mx; ans++)
+            if(dp[ans] != 9999999)
+                break;
+
+        printf("%d %d\n",ans,dp[ans]);
+    }
+
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

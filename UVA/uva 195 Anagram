@@ -1,0 +1,114 @@
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <algorithm>
+#include <math.h>
+#include <string.h>
+
+using namespace std;
+
+int testCase,l;
+char a [10000];
+int k [10000];
+bool f,g;
+
+int compare(char a, char b) {
+
+    f = true;
+    g = true;
+
+    if(a >= 'a')
+        f = false;
+    if(b >= 'a')
+        g = false;
+
+    if(f == g)
+        return a <= b;
+
+    if(f) {
+        if(a - 'A' <= b-'a')
+            return 1;
+        return 0;
+    }
+    else {
+
+         if(a - 'a' == b-'A')
+            return 0;
+         if(a - 'a' <= b-'A')
+            return 1;
+        return 0;
+    }
+}
+
+int part(int first, int last) {
+    int x = a[last];
+    int i = first-1;
+    int j = first;
+    int temp;
+
+    while(j < last) {
+        if(compare(a[j],x)){
+            temp = a[i+1];
+            a[i+1] = a[j];
+            a[j] = temp;
+            i++;
+        }
+        j++;
+    }
+
+    a[last] = a[i+1];
+    a[i+1] = x;
+
+    return i+1;
+}// end of part
+
+void sorter(int first, int last) {
+    if(last <= first)
+        return;
+    int r = part(first, last);
+    sorter(first,r-1);
+    sorter(r+1,last);
+}
+
+int main() {
+
+    scanf("%d",&testCase);
+    int i;
+    while (testCase--) {
+
+        scanf("%s",a);
+        l = strlen(a);
+        sorter(0, l-1);
+        for(i = 0; i < l ; i++)
+            k[i] = i;
+
+        for(i = 0; i < l-1; i++) {
+            while(i < l-1 && a[i] == a[i+1]) {
+                k[i+1] = k[i];
+                i++;
+            }
+        }
+
+        do {
+             for(i = 0; i < l ; i++) {
+                printf("%c",a[k[i]]);
+             }
+
+
+             printf("\n");
+        }while(next_permutation(k,k+l));
+    }
+
+    return 0;
+
+}// end of main
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+
+#include<stdio.h>
+#include<bitset>
+#include<vector>
+#include<algorithm>
+using namespace std;
+bitset<10000010> p;
+vector<int> primes;
+long long i,j ,m,n,a,b;
+
+
+void gen(long long x){
+
+    p.set();
+    p[2] = 1;
+    for(i = 2; i < x; i++){
+        if(!p[i])
+            continue;
+        primes.push_back(i);
+        for(j = i*i; j < x; j+= i)
+            p[j] = 0;
+    }
+
+}
+
+
+int main(){
+
+    gen(10000000);
+
+    while(scanf("%lld",&n) && n){
+
+        a = upper_bound(primes.begin(),primes.end(),n) - primes.begin();
+        b = 0;
+        for(i = a; i > -1 && primes[i]*2 >= n; i--){
+            for(j = 0 ; j <= i; j++){
+                if(primes[i]+primes[j] == n)
+                    b++;
+            }
+        }
+        printf("%lld\n",b);
+    }
+
+    return 0;
+}
+

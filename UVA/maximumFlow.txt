@@ -1,0 +1,204 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+import javax.management.MXBean;
+
+public class Main {
+
+
+	
+	static int n, m, s, t;
+	static ArrayList<ArrayList<Edge>> adjancenyList;
+	static final int maxNumber = 1000;
+	static Edge parent[];
+	
+	
+	
+	public static void main(String[] args) throws Exception {
+
+//		BufferedReader in = new BufferedReader(new FileReader(new File("input.txt")));
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		
+		
+		adjancenyList = new ArrayList<ArrayList<Edge>>();
+		for(int i = 0; i < maxNumber; i++) {
+			adjancenyList.add(new ArrayList<Main.Edge>());
+		}
+		
+		parent = new Edge[maxNumber];
+		
+		
+		StringTokenizer  token;
+		int a, b, c;
+		int testCase = 1;
+		
+		
+		while(true) {
+			
+			n = Integer.parseInt(in.readLine());
+			if(n == 0)
+				break;
+			
+			token = new StringTokenizer(in.readLine());
+			s = Integer.parseInt(token.nextToken()) - 1;
+			t = Integer.parseInt(token.nextToken()) - 1;
+			m = Integer.parseInt(token.nextToken());
+			
+			
+			for(int i = 0; i < n; i++) {
+				adjancenyList.get(i).clear();
+			}
+			
+			for(int i = 0; i < m; i++) {
+				token = new StringTokenizer(in.readLine());
+				a = Integer.parseInt(token.nextToken()) - 1;
+				b = Integer.parseInt(token.nextToken()) - 1;
+				c = Integer.parseInt(token.nextToken());
+				
+				Edge e = new Edge(a, b, c, 0);
+				adjancenyList.get(a).add(e);
+				adjancenyList.get(b).add(e);
+				
+				e = new Edge(b, a, c, 0);
+				adjancenyList.get(a).add(e);
+				adjancenyList.get(b).add(e);
+				
+			}
+	 		
+			
+			int maxFlow = 0;
+			while(true) {
+				bfs();
+	
+				if(parent[t] == null)
+					break;
+				int addtionalFlow = augmentation(t, Integer.MAX_VALUE);
+				maxFlow += addtionalFlow;
+				
+			}
+			
+			
+			System.out.printf("Network %d\n", testCase++);
+			System.out.printf("The bandwidth is %d.\n", maxFlow);
+			System.out.println();
+			
+		}
+		
+		
+		
+		in.close();
+	}
+	
+	
+	static int augmentation(int v, int minimumEdge) {
+		
+		
+		int ans =  0;
+		if(v == s) {
+			ans = minimumEdge;
+		}
+		else {
+			if(parent[v].to == v) {
+				minimumEdge = Math.min(minimumEdge, parent[v].capacity);
+				minimumEdge = Math.min(minimumEdge, augmentation(parent[v].from, minimumEdge));
+				parent[v].capacity -= minimumEdge;
+				parent[v].flow += minimumEdge;
+				ans = minimumEdge;
+			}
+			else {
+				minimumEdge = Math.min(minimumEdge, parent[v].flow);
+				minimumEdge = Math.min(minimumEdge, augmentation(parent[v].to, minimumEdge));
+				parent[v].capacity += minimumEdge;
+				parent[v].flow -= minimumEdge;
+				ans = minimumEdge;
+			}
+		}
+		
+		return ans;
+	}
+	
+	
+	static void bfs() {
+		
+		Arrays.fill(parent, 0, n, null);
+		boolean visited[] = new boolean[n];
+		Arrays.fill(visited, 0, n, false);
+		
+		
+		Queue<Integer> q = new LinkedList<>();
+		
+		q.add(s);
+		visited[s] = true;
+		ArrayList<Edge> e;
+		Edge currentEdge;
+		
+		while(!q.isEmpty() && parent[t] == null) {
+			
+			int v = q.poll();
+			e = adjancenyList.get(v);		
+			for(int i = 0; i < e.size(); i++) {
+				currentEdge = e.get(i);
+				
+				if(currentEdge.from == v) {//forward edge
+					if(currentEdge.capacity != 0 && !visited[currentEdge.to]) {
+						parent[currentEdge.to] = currentEdge;
+						visited[currentEdge.to] = true;
+						q.add(currentEdge.to);
+					}
+				}
+				else {
+					if(currentEdge.flow != 0 && !visited[currentEdge.from]) {
+						parent[currentEdge.from] = currentEdge;
+						visited[currentEdge.from] = true;
+						q.add(currentEdge.from);
+					}					
+				}
+				
+			}
+			
+			
+			
+		}
+		
+		
+	}
+	
+	
+	static class Edge {
+		
+		int from, to, capacity, flow;
+		public Edge(int from, int to, int capacity, int flow) {
+			this.from = from;
+			this.to = to;
+			this.capacity = capacity;
+			this.flow = flow;
+		}
+		
+	}
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

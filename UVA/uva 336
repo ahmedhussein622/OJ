@@ -1,0 +1,116 @@
+
+#include<stdio.h>
+#include<math.h>
+#include <list>
+#include <queue>
+#include <map>
+#include <bitset>
+
+using namespace std;
+list<int> Adj[30];
+map<int,int> nodes;
+
+
+int d[30];
+
+int NC;
+int first, second;
+int i,j;
+int u,v;
+int counter,cases;
+list<int> :: iterator it;
+list<int> l;
+
+void BFS(int index) {
+
+    queue<int> q;
+    bitset<30> visited;
+
+    q.push(index);
+    visited[index] = 1;
+    for(i = 0; i < j; i++) {
+        d[i] = 100000000;
+    }
+    d[index] = 0;
+
+    while (!q.empty()) {
+        u = q.front();
+        q.pop();
+        l = Adj[u];
+        for(it = l.begin(); it != l.end(); it++) {
+            v = *it;
+            if(! visited[v]) {
+                visited[v] = 1;
+                q.push(v);
+                d[v] = d[u] + 1;
+            }
+        }
+    }
+}
+
+
+void reset() {
+    nodes.clear();
+    for(i = 0; i < 30; i++)
+        Adj[i].clear();
+}
+
+void buildGraph() {
+
+    j = 0;
+    for(i = 0; i < NC; i++) {
+        scanf("%d %d",&first, &second);
+        if(nodes.find(first) == nodes.end()){
+            nodes[first] = j++;
+        }
+        if(nodes.find(second) == nodes.end()){
+            nodes[second] = j++;
+        }
+
+        Adj[nodes[first]].push_back(nodes[second]);
+        Adj[nodes[second]].push_back(nodes[first]);
+
+    }
+
+}
+
+int main() {
+
+    cases = 1;
+    while(scanf("%d",&NC) && NC) {
+
+        reset();
+        buildGraph();
+
+
+        while(scanf("%d %d",&first,&second) != EOF) {
+
+            if(first == 0 && second == 0)
+                break;
+
+            if(nodes.find(first) != nodes.end()) {
+                BFS(nodes[first]);
+                counter = 0 ;
+                for(i = 0; i < j; i++) {
+                    if(d[i] > second)
+                        counter++;
+                }
+            }
+            else {
+                if(second == 0) {
+                    counter = 0;
+                }
+                else
+                    counter = nodes.size();
+            }
+
+            printf("Case %d: %d nodes not reachable from node %d with TTL = %d.\n",cases++,counter,first,second);
+        }
+
+
+    }
+
+
+    return 0;
+}
+

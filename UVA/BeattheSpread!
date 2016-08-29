@@ -1,0 +1,27 @@
+
+#include<stdlib.h>
+#include<stdio.h>
+
+
+int main () {
+
+
+    int n,s,d,b;
+    scanf("%d",&n);
+
+    while (n--) {
+
+        scanf("%d %d",&s,&d);
+
+        b = (s-d);
+        if (b < 0 || b%2 == 1)
+            printf("impossible\n");
+        else
+            printf("%d %d\n",s-b/2,b/2);
+
+    }
+
+
+    return 0;
+}
+

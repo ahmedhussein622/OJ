@@ -1,0 +1,107 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+using namespace std;
+
+
+int input[10010],w[10010],dp[10010];
+int mm,n,LI,LD;
+
+
+int LIS() {
+
+    dp[0] = w[0];
+    int m = dp[0];
+    for(int i = 1; i < n; i++) {
+        mm = w[i];
+        for(int j = 0;j < i;j++) {
+            if(input[j] < input[i])
+                mm = max(mm,w[i]+dp[j]);
+        }
+
+        dp[i] = mm;
+        m = max(m,mm);
+    }
+
+    return m;
+
+}
+
+
+
+int LDS() {
+
+    dp[0] = w[0];
+    int m = dp[0];
+    for(int i = 1; i < n; i++) {
+        mm = w[i];
+        for(int j = 0;j < i;j++) {
+            if(input[j] > input[i])
+                mm = max(mm,w[i]+dp[j]);
+        }
+
+        dp[i] = mm;
+        m = max(m,mm);
+    }
+
+    return m;
+
+}
+
+
+
+int main()
+{
+
+        int tc;
+        scanf("%d",&tc);
+        int a,b;
+		for(int k = 1; k <= tc; k++){
+            scanf("%d",&n);
+			for(int i = 0; i < n; i++)
+				scanf("%d",input+i);
+
+            for(int i = 0; i < n; i++)
+                scanf("%d",w+i);
+
+            a = LIS();
+            b = LDS();
+            if(a >= b) {
+                printf("Case %d. Increasing (%d). Decreasing (%d).\n",k,a,b);
+            }
+            else
+                printf("Case %d. Decreasing (%d). Increasing (%d).\n",k,b,a);
+
+		}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

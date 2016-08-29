@@ -1,0 +1,76 @@
+
+#include<stdio.h>
+#include<bitset>
+#include<vector>
+#include<algorithm>
+#include<map>
+using namespace std;
+bitset<1000010> pr;
+vector<int>primes;
+map<int,int>r;
+int i,j,m,n,a,b,x,y,k;
+
+void gen(long long x){
+    long long i,j;
+    pr.set();
+    for(i = 2; i < x; i++){
+        if(!pr[i])
+            continue;
+        primes.push_back(i);
+        for(j = i * i; j < x;j+=i)
+            pr[j] = 0;
+
+    }
+}
+
+int main(){
+
+    gen(1000005);
+    map<int,int>::iterator it;
+    scanf("%d",&k);
+    int f,s;
+    while(k--) {
+        scanf("%d %d",&a,&b);
+        if(a > b){
+            x = a;
+            a = b;
+            b = x;
+        }
+        x = lower_bound(primes.begin(),primes.end(),a) - primes.begin();
+        y = upper_bound(primes.begin(),primes.end(),b) - primes.begin()-1;
+
+        if(y - x < 1){
+            printf("No jumping champion\n");
+            continue;
+        }
+        r.clear();
+        for(i = x; i < y; i++){
+            m = primes[i+1]-primes[i];
+            r[m]++;
+        }
+        if(r.size() == 1){
+            printf("The jumping champion is %d\n",r.begin()->first);
+            continue;
+        }
+
+        it = r.begin();
+        f = it->second;m = it->first;s = -1;
+        it++;
+        while(it != r.end()){
+            if(it->second >= f){
+                s = f;
+                f = it->second;
+                m = it->first;
+            }
+            it++;
+        }
+        if(f != s)
+            printf("The jumping champion is %d\n",m);
+        else
+            printf("No jumping champion\n");
+
+    }// end of while
+
+    return  0;
+}
+

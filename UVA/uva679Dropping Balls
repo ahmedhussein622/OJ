@@ -1,0 +1,30 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+int main () {
+
+    int l,n,d,cn,x;
+    scanf("%d",&l);
+
+    while(l--){
+        scanf("%d %d",&d,&n);
+        cn = 1;
+        n--;
+        x = pow(2,d-1);
+
+        while(cn < x){
+
+            if(n % 2 == 0)
+                cn = cn * 2;
+            else
+                cn = cn * 2 + 1;
+            n /= 2;
+        }
+        printf("%d\n",cn);
+    }
+
+    return 0;
+}
+

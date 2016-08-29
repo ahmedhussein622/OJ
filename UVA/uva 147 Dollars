@@ -1,0 +1,76 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	// $100, $50, $20, $10, and $5 notes and $2, $1, 50c, 20c, 10c and 5c
+	static int coins[] = {5,10,20,50,100,200,500,1000,2000,5000,10000};
+	static long dp[] = new long[30005];
+	
+	public static void main(String[] args) throws Exception {
+		
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		dp[0] = 1;
+		
+		int i,j;
+		for(i = 0; i < 11; i++) {
+			for(j = coins[i]; j < 30005;j++) {
+				dp[j] += dp[j-coins[i]];
+				
+			}
+		}
+		String input,r;
+		
+		while(true) {
+			
+			input = in.readLine();
+			j = (int) Math.round((100*Double.parseDouble(input)));
+			if(j == 0)
+				break;
+			
+			r = "";
+			for(i = 0; i < 6-input.length(); i++)
+				r += " ";
+			r += input;
+			
+			input = ""+dp[j];
+			
+			for(i = 0; i < 17-input.length(); i++)
+				r += " ";
+			r+=dp[j];
+			out.println(r);
+			
+		}
+		
+		out.flush();
+	}//end of main
+
+	
+	
+	
+	
+	
+	
+	
+}// end of class

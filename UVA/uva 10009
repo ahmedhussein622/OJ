@@ -1,0 +1,146 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+//		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+		ArrayList<Character> nodes = new ArrayList<Character>();
+		ArrayList<ArrayList<Integer>> edges = new ArrayList<ArrayList<Integer>>();
+		
+		int n,m,first,second,number;
+		char f,s;
+		String input;
+		input = in.readLine();
+		while(input.length() == 0)
+			input = in.readLine();
+		StringTokenizer token = new StringTokenizer(input);
+		number = Integer.parseInt(token.nextToken());
+		
+		
+		while(number-- != 0) {
+			
+			input = in.readLine();
+			while(input.length() == 0)
+				input = in.readLine();
+			
+			token = new StringTokenizer(input);
+			m = Integer.parseInt(token.nextToken());
+			n = Integer.parseInt(token.nextToken());
+			
+			nodes.clear();
+			edges.clear();
+			
+			for(int i = 0; i < m; i++) {
+				input = in.readLine();
+				while(input.length() == 0)
+					input = in.readLine();
+				token = new StringTokenizer(input);
+				f = token.nextToken().charAt(0);
+				s = token.nextToken().charAt(0);
+				if(!nodes.contains(f)) {
+					nodes.add(f);
+					edges.add(new ArrayList<Integer>());
+				}
+				if(!nodes.contains(s)) {
+					nodes.add(s);
+					edges.add(new ArrayList<Integer>());
+				}
+				first = nodes.indexOf(f);
+				second = nodes.indexOf(s);
+				edges.get(first).add(second);
+				edges.get(second).add(first);
+				
+			}// end of for
+			
+	
+			for(int i = 0; i < n; i++) {
+				input = in.readLine();
+				while(input.length() == 0)
+					input = in.readLine();
+				token = new StringTokenizer(input);
+				f = token.nextToken().charAt(0);
+				s = token.nextToken().charAt(0);
+				input = BFS(edges, nodes, nodes.indexOf(f), nodes.indexOf(s));
+				out.println(input);
+				
+			}
+			if(number != 0)
+				out.println();
+		}// end of while
+		
+		out.flush();
+	}// end of main
+	
+	public static String BFS(ArrayList<ArrayList<Integer>> edges,ArrayList<Character> nodes,int start,int end) {
+		
+		int d[] = new int[nodes.size()];
+		for(int i  = 0 ;i < nodes.size(); i++)
+			d[i] = 0;
+		
+		int visited[] = new int[nodes.size()];
+		for(int i  = 0 ;i < nodes.size(); i++)
+			visited[i] = 0;
+		visited[start] = 1;
+		
+		d[start] = -1;
+		d[end] = -1;
+		Queue<Integer> queue = new LinkedList<Integer>();
+		queue.add(start);
+		
+		int u,v,f;
+		f = 1;
+		while(!queue.isEmpty() && f == 1) {
+			u = queue.poll();
+			for(int i = 0; i < edges.get(u).size();i++) {
+				
+				v = edges.get(u).get(i);
+				if(visited[v] == 1)
+					continue;
+				d[v] = u;
+				queue.add(v);
+				visited[v] = 1;
+				if(v == end) {
+					f = 0;
+					break;
+				}
+			}
+
+		}
+		if(d[end] == -1)
+			return null;
+		
+		
+		return result(d, end, nodes);
+	}
+	
+	public static String result(int a[],int end,ArrayList<Character>nodes){
+		
+		if(a[end] == -1)
+			return ""+nodes.get(end);
+		return result(a, a[end], nodes)+nodes.get(end);
+	}
+	
+	
+}
+
+
+
+
+

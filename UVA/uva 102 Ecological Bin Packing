@@ -1,0 +1,92 @@
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <algorithm>
+#include <math.h>
+
+using namespace std;
+
+int box1 [3];
+int box2 [3];
+int box3 [3];
+
+int b [3];
+int m [3];
+int minimum,r;
+
+
+int calculate() {
+
+    int result = 0;
+
+    result += box2[b[0]]+box3[b[0]];
+    result += box1[b[1]]+box3[b[1]];
+    result += box1[b[2]]+box2[b[2]];
+
+    return result;
+}
+
+
+
+int main() {
+
+    int i;
+
+    while(scanf("%d",&box1[0]) != EOF) {
+
+        scanf("%d",&box1[2]);
+        scanf("%d",&box1[1]);
+
+        scanf("%d",&box2[0]);
+        scanf("%d",&box2[2]);
+        scanf("%d",&box2[1]);
+
+        scanf("%d",&box3[0]);
+        scanf("%d",&box3[2]);
+        scanf("%d",&box3[1]);
+
+        b[0] = 0;
+        b[1] = 1;
+        b[2] = 2;
+        minimum = 999999999;
+
+        do {
+
+            r = calculate();
+            if(r < minimum) {
+                m[0] = b[0];
+                m[1] = b[1];
+                m[2] = b[2];
+                minimum = r;
+            }
+        }while(next_permutation(b,b+3));
+
+
+        for(i = 0; i < 3; i++) {
+            switch(m[i]) {
+                case 0: printf("B");break;
+                case 1: printf("C");break;
+                case 2: printf("G");break;
+            }
+        }
+
+        printf(" %d\n",minimum);
+
+    }// end of while
+
+
+
+
+    return 0;
+
+}// end of main
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,110 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <cmath>
+#define Infinity 9999999;
+
+
+using namespace std;
+
+int dp[15][1024];
+int s,n;
+int x[100],y[100];
+
+int dist(int a, int b) {
+
+    return abs(x[a]-x[b])+abs(y[a]-y[b]);
+
+}
+
+
+double TSP() {
+
+    int i,j,k,m,ns,ps;
+    int mini,dd;
+
+    s = pow(2,n)-1;
+    for(i = 0; i <= s; i++)
+        dp[0][i] = Infinity;
+
+    dp[0][1] = 0;
+    int comp[n];
+    comp[0] = 1;
+
+    for(m = 2; m <= n; m++) {
+
+        for(i = 1; i < n; i++)
+            comp[i] = 0;
+
+        for(i = 1; i < m; i++)
+            comp[n-i] = 1;
+
+        do {
+
+            ns = 0;
+            for(i = 0; i < n; i++) {
+                if(comp[i] == 1) {
+                    ns += pow(2,i);
+                }
+            }
+
+            for(j = 1; j < n;j++) {
+                if(comp[j] == 1) {
+                    mini = Infinity;
+                    ps = ns - pow(2,j);
+                    for(k = 0;k < n; k++) {
+                        if(comp[k] == 1 && k != j) {
+                            dd = dp[k][ps] + dist(j,k);
+                            if(dd < mini) {
+                                mini = dd;
+                            }
+                        }
+                    }
+                    dp[j][ns] = mini;
+                }
+            }
+
+        }while(next_permutation(comp+1,comp+n));
+
+
+    }
+
+    mini = Infinity;
+    for(i = 1; i < n; i++) {
+        dd = dp[i][s] + dist(0,i);
+        if(mini > dd) {
+            mini = dd;
+        }
+    }
+
+
+    return mini;
+
+}
+
+
+int main() {
+
+    int tc;
+    scanf("%d",&tc);
+    while(tc--) {
+        scanf("%d %d",x,y);
+        scanf("%d %d",x,y);
+        scanf("%d",&n);
+        n++;
+        for(int i = 1; i < n;i++)
+            scanf("%d %d",x+i,y+i);
+
+        int ans = TSP();
+        printf("The shortest path has length %d\n",ans);
+
+    }
+
+    return 0;
+}
+
+
+
+
+

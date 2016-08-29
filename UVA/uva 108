@@ -1,0 +1,79 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <map>
+#define Infinity 9999999999999
+
+using namespace std;
+int input[1020][1020];
+int bb[1020];
+int n;
+
+int kadnes(int a[]) {
+
+    int maxSum = -99999999;
+    int currentSum = 0;
+
+    for(int i = 0; i < n;i++) {
+        currentSum += a[i];
+        if(currentSum > maxSum)
+            maxSum =  currentSum;
+
+        if(currentSum < 0)
+            currentSum = 0;
+    }
+
+    return maxSum;
+
+}
+
+
+int main() {
+
+    while(scanf("%d", &n) != EOF) {
+
+        for(int i = 0;i < n;i ++) {
+            for(int j = 0 ;j < n;j++) {
+                scanf("%d",&input[i][j]);
+                if(i != 0)
+                    input[i][j] += input[i-1][j];
+            }
+        }
+
+        int maxSum = -999999999;
+        for(int i = 0; i < n; i++) {
+            for(int j = i; j < n;j++) {
+                for(int k = 0; k < n; k++)
+                    bb[k] = input[j][k] - input[i][k];
+                maxSum = max(maxSum, kadnes(bb));
+            }
+        }
+
+        printf("%d\n",maxSum);
+
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

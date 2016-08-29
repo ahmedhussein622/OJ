@@ -1,0 +1,87 @@
+#include <stdlib.h>
+#include <string.h>
+#include <algorithm>
+
+using namespace std;
+
+int n, k, shift, mx;
+int a[110],b[110],c[110];
+
+int main() {
+
+    scanf("%d %d", &n, &k);
+
+    int i,j;
+    for(i = 0; i < n;i++)
+        scanf("%d",a+i);
+
+
+    for(i = 0; i < n; i++) {
+        scanf("%d",b+i);
+        c[i] = a[i]-k*b[i];
+    }
+
+
+
+    int mx = 50000;
+    int dp[mx+1];
+    memset(dp, -1, sizeof(dp));
+
+    dp[0] = 0;
+    int tt;
+
+    for(i = 0; i < n;i++) {
+       // printf("%d %d %d %d\n",i,a[i],c[i],mx);
+        if(c[i] >= 0) {
+            tt = c[i];
+            for(j = mx; j >= tt; j--) {
+                if(dp[j-c[i]] != -1) {
+                    dp[j] = max(dp[j], dp[j-c[i]]+a[i]);
+                    //printf("+updating %d : %d %d %d\n",j,dp[j],a[i],c[i]);
+                }
+            }
+        }
+
+    }
+
+
+
+    for(i = 0; i < n;i++) {
+        if(c[i] < 0) {
+            tt = mx+c[i];
+            for(j = 0; j <= tt; j++) {
+                if(dp[j - c[i]] != -1) {
+                     dp[j] = max(dp[j], dp[j-c[i]]+a[i]);
+                     //printf("-updating %d : %d %d %d\n",j,dp[j],a[i],c[i]);
+                }
+            }
+        }
+    }
+
+
+
+    if(dp[0] != 0)
+        printf("%d\n",dp[shift]);
+    else
+        printf("-1\n");
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

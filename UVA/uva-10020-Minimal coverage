@@ -1,0 +1,64 @@
+
+#include<bitset>
+#include<stdio.h>
+#include<map>
+using namespace std;
+
+int left[100005],right[100005],m,n,num,a,b,i,j;
+bitset<100005>used;
+map<int,int> result;
+map<int,int>::iterator it;
+int main() {
+
+    scanf("%d",&n);
+
+    while(n--){
+
+        scanf("%d",&m);
+
+        num = -1;
+        while(1) {
+            scanf("%d %d",&a,&b);
+            if(!a && !b)
+                break;
+            num++;
+            left[num] = a; right[num] = b;
+        }
+        used.reset();
+        a = 0;
+        result.clear();
+        while(a < m){
+
+            j = -1;
+            for(i = 0; i <= num ; i++)
+                if(!used[i] && left[i] <= a){
+                    j = i;
+                    break;
+                }
+            if( j < 0)
+                break;
+
+            for(i = j+1; i <= num ;i++){
+                if(!used[i] && left[i] <= a && right[i] > right[j])
+                    j = i;
+            }
+            used[j] = 1;
+            result[left[j]] = right[j];
+            a = right[j];
+        }
+
+        if(j < 0){
+            printf("0\n");
+        }
+        else{
+            printf("%d\n",(int)result.size());
+            for(it = result.begin(); it != result.end(); it++)
+                printf("%d %d\n",it->first,it->second);
+        }
+        if(n)
+            printf("\n");
+    }// end of test cases
+
+    return 0;
+}
+

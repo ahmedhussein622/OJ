@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <map>
+#include <vector>
+#include <bitset>
+#include <queue>
+#include <string.h>
+
+using namespace std;
+
+vector<int> Adj[30];
+vector<int> vec;
+
+int sets;
+int M,N,P;
+int i,j;
+int d[30];
+int u,v,cost;
+
+struct cmp_str
+{
+   bool operator()(char const *a, char const *b)
+   {
+      return strcmp(a, b) < 0;
+   }
+};
+
+map<char*,int,cmp_str> nodeNames;
+
+
+void BFS(int from, int to) {
+
+    for(i = 0; i < M; i++)
+        d[i] = -1;
+
+    bitset<30>visited;
+    queue<int> q;
+
+    visited[from] =  1;
+    q.push(from);
+    d[from] = 0;
+
+    while(!q.empty() && ! visited[to]) {
+        u = q.front();
+        q.pop();
+        vec = Adj[u];
+
+        for(i = 0 ;i < vec.size();i++) {
+            v = vec[i];
+            if(!visited[v]) {
+                visited[v] = 1;
+                d[v] = d[u] + 1;
+                q.push(v);
+            }
+        }
+
+    }
+}
+
+
+int main () {
+
+    scanf("%d",&sets);
+    printf("SHIPPING ROUTES OUTPUT\n");
+    int bl = 1;
+    while(bl <= sets) {
+        printf("\nDATA SET  %d\n\n",bl);
+        nodeNames.clear();
+        for(i = 0; i < 30; i++){
+            Adj[i].clear();
+        }
+
+        scanf("%d %d %d",&M,&N,&P);
+
+        // build the graph
+        for(i = 0; i< M; i++) {
+            char *n = new char[3];
+            scanf("%s",n);
+            nodeNames[n] = i;
+        }
+
+        for(i = 0; i < N; i++) {
+            char a[3];
+            char b[3];
+            scanf("%s",a);
+            scanf("%s",b);
+            Adj[nodeNames[a]].push_back(nodeNames[b]);
+            Adj[nodeNames[b]].push_back(nodeNames[a]);
+        }
+        // done building
+
+        for(j =0 ;j < P; j++){
+            char a[3];
+            char b[3];
+
+            scanf("%d",&cost);
+            scanf("%s",a);
+            scanf("%s",b);
+
+            BFS(nodeNames[a],nodeNames[b]);
+            if(d[nodeNames[b]] >= 0) {
+                printf("$%d\n",cost*d[nodeNames[b]]*100);
+            }
+            else{
+                printf("NO SHIPMENT POSSIBLE\n");
+            }
+        }
+       bl++;
+    }// end of while
+
+    printf("\nEND OF OUTPUT\n");
+    return 0;
+}
+

@@ -1,0 +1,77 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<bitset>
+#include<string.h>
+using namespace std;
+int main () {
+
+    int t[20],r[20],h[20],T,R,H;
+    bitset<20> tr[20],rh[20],ht[20];
+    char a[10];
+    int i,j,m,n,minimum,x,y,z;
+    bool b;
+    while (gets(a) && strlen(a) > 2) {
+
+        sscanf(a,"%d %d %d",&T,&R,&H);
+
+        for (i = 0; i < T; i++) {
+            scanf("%d",&t[i]);
+            for(j = 0; j < R; j++) {
+                scanf("%d",&m);
+                tr[i][j] = m;
+            }
+
+        }
+
+        for (i = 0; i < R; i++) {
+            scanf("%d",&r[i]);
+            for(j = 0; j < H; j++) {
+                scanf("%d",&m);
+                rh[i][j] = m;
+            }
+
+        }
+
+        for (i = 0; i < H; i++) {
+            scanf("%d",&h[i]);
+            for(j = 0; j < T; j++) {
+                scanf("%d",&m);
+                ht[i][j] = m;
+            }
+
+        }
+        scanf("\n");
+        // end of input
+
+        b = false;
+        minimum = 999999999 ;
+
+        for (i = 0; i < T; i++) {
+            for (j = 0 ; j < R; j++) {
+                for (m = 0 ; m < H; m++) {
+                    if (!tr[i][j] && ! rh[j][m] && !ht[m][i]) {
+                            b = true;
+                            n  = t[i] + r[j] + h[m] ;
+                            if (minimum > n) {
+                                minimum = n;
+                                x = i; y = j; z = m;
+                            }
+                    }
+                }
+            }
+        }// end of fors
+
+        if (!b)
+            printf("Don't get married!\n");
+        else
+            printf("%d %d %d:%d\n",x,y,z,minimum);
+
+    }// end of while
+
+
+
+    return 0 ;
+}
+

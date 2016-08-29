@@ -1,0 +1,35 @@
+
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+int main (){
+
+    int t,n,m,i,j,pay;
+    vector<int>stuff;
+    vector<int>::iterator it;
+    scanf("%d",&t);
+
+    while(t--){
+
+        stuff.clear();
+        scanf("%d",&n);
+        for(i = 0; i < n; i++){
+            scanf("%d",&j);
+            stuff.push_back(j);
+        }
+        sort(stuff.begin(),stuff.end());
+        m = n / 3; pay = 0;
+        it = stuff.end()-3;
+        for(i = 0;i < m; i++){
+            pay += *it;
+            it = it - 3;
+        }
+
+        printf("%d\n",pay);
+    }
+
+    return 0;
+}
+

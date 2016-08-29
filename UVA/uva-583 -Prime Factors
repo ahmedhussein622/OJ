@@ -1,0 +1,65 @@
+
+#include<stdio.h>
+#include<bitset>
+#include<vector>
+#include<stdlib.h>
+using namespace std;
+bitset<10000010> p;
+vector<int> primes;
+long long i,j ,m,n,a,b;
+
+
+void gen(long long x){
+
+    p.set();
+    p[2] = 1;
+    for(i = 2; i < x; i++){
+        if(!p[i])
+            continue;
+        primes.push_back(i);
+        for(j = i*i; j < x; j+= i)
+            p[j] = 0;
+    }
+
+
+}
+
+void factorize(long long x){
+
+    a = 0;b = primes[a];
+    j = 0;
+    while(x != 1 && b*b <= x){
+
+        while(x%b == 0){
+            x/= b;
+            if(j)
+                printf(" x");
+            else
+                j = 1;
+            printf(" %lld",b);
+        }
+        b = primes[++a];
+    }
+    if(x != 1 && j)
+        printf(" x %lld",x);
+    else if(x != 1)
+        printf(" %lld",x);
+    printf("\n");
+}
+
+int main(){
+
+    gen(10000000);
+
+    while(scanf("%lld",&n) && n){
+
+        printf("%lld =",n);
+        if(n < 0)
+            printf(" -1 x");
+
+        factorize(abs(n));
+    }
+
+    return 0;
+}
+

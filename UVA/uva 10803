@@ -1,0 +1,102 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <map>
+#include <cmath>
+#define Infinity 99999999
+
+using namespace std;
+
+map<int,pair<int,int> > nodes;
+double dp[110][110][110];
+int n;
+
+double solve() {
+
+    for(int k = 1; k <= n; k++) {
+        for(int i = 1;i <= n; i++) {
+            for(int j = 1; j <= n;j++) {
+                dp[i][j][k] = min(dp[i][j][k-1],dp[i][k][k-1] + dp[k][j][k-1]);
+            }
+        }
+    }
+
+    double ans = 0;
+    for(int i = 1; i <= n; i++) {
+        for(int j = i+1; j <= n;j++) {
+            ans = max(ans,dp[i][j][n]);
+        }
+    }
+
+    return ans;
+
+}
+
+double dist(int a, int b) {
+
+    pair<int,int> u = nodes[a];
+    pair<int,int> v = nodes[b];
+
+    double d =  pow(pow(u.first-v.first,2)+pow(u.second-v.second,2),0.5);
+    if(d > 10)
+        return Infinity;
+    return d;
+}
+
+int main() {
+
+    int tc,a,b;
+    double dd;
+    scanf("%d",&tc);
+    for(int v = 1; v <= tc;v++) {
+        scanf("%d",&n);
+        nodes.clear();
+        for(int i = 1; i <= n;i++) {
+            scanf("%d %d",&a,&b);
+            nodes[i] = make_pair(a, b);
+        }
+
+        for(int i = 1; i <= n; i++) {
+            dp[i][i][0] = 0;
+            for(int j = i+1; j <= n; j++) {
+                dd = dist(i, j);
+                dp[i][j][0] = dd;
+                dp[j][i][0] = dd;
+            }
+        }
+
+        double ans = solve();
+
+        printf("Case #%d:\n",v);
+        if(ans < Infinity) {
+            printf("%.4lf\n",ans);
+        } else {
+            printf("Send Kurdy\n");
+        }
+        printf("\n");
+
+
+
+    }
+
+
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,53 @@
+
+// I learned to follow instructions word by word and do it exactly
+// please read carefull and every thing will be fine
+// adding scanf in while that is new thing for me
+
+
+#include <stdio.h>
+
+int main () {
+
+   int h,u,d,f, dayNumber;
+   float heightClimbed, prevDistance;
+
+
+    while (scanf("%d %d %d %d",&h,&u,&d,&f) && h)  {//intputs loop
+
+/////// solution /////////////////////////////////
+
+    heightClimbed = 0;
+    dayNumber = 0;
+    prevDistance = u;
+
+    do{
+            dayNumber ++;
+            heightClimbed += prevDistance;
+            if(heightClimbed > h)
+               {
+                    printf("success on day %d\n",dayNumber);
+                    break;
+               }
+
+            heightClimbed -= d;
+            if(heightClimbed < 0)
+               {
+                    printf("failure on day %d\n",dayNumber);
+                    break;
+               }
+
+            prevDistance -= f*u  /100.0;
+            if (prevDistance < 0)
+                prevDistance = 0;
+
+    } while (true);
+
+
+///// end of solution ///////////////////////////
+
+
+
+    }// end of inputs
+
+    return 0;
+}

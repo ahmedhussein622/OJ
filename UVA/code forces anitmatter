@@ -1,0 +1,72 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <algorithm>
+
+using namespace std;
+
+
+
+int main() {
+
+    int n, ans, i, j, sum;
+    scanf("%d",&n);
+
+    sum = 0;
+    int a[n+1];
+
+    for(i = 1; i <= n;i++) {
+        scanf("%d",a+i);
+        sum += a[i];
+    }
+
+    int s = sum/2+10;
+    int dp[n+1][2*s+10];
+    memset(dp,0,sizeof(dp));
+    dp[0][s] = 1;
+
+    ans = 0;
+
+    for(i = 1; i <= n;i++) {
+
+        for(j = 2*s; j >= a[i]; j--) {
+            dp[i][j] += dp[i-1][j-a[i]];
+            dp[i][j] %= 1000000007;
+        }
+
+        for(j = 0; j <= 2*s - a[i]; j++) {
+            dp[i][j] += dp[i-1][j+a[i]];
+            dp[i][j] %= 1000000007;
+        }
+
+        ans += dp[i][s];
+        ans %= 1000000007;
+        dp[i][s]++;
+
+    }
+
+    printf("%d\n",ans);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

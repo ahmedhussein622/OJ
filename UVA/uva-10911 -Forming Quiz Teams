@@ -1,0 +1,55 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<algorithm>
+#include<map>
+#include<math.h>
+using namespace std;
+char a[25];
+int x[25],y[25],n,i,l;
+map<int,float> r;
+map<int,float> :: iterator it;
+
+float solve(int z,int t){
+
+    if(z == l)
+        return 0;
+    if(z & (int)pow(2,t))
+        return solve(z,t+1);
+
+    it = r.find(z);
+    if(it != r.end())
+        return it->second;
+
+    float cost = 10000000;
+    int j;
+
+    z = z | (int)pow(2,t);
+
+    for(j = t+1; j < n; j++){
+        if(z & (int)pow(2,j))
+            continue;
+        cost = min((double)cost,solve(z |(int) pow(2,j),t+1)+pow(pow((x[j]-x[t]),2)+pow((y[j]-y[t]),2),.5));
+    }
+
+    z = z & (~(int)pow(2,t));
+    r[z] = cost;
+
+    return cost;
+}
+
+int main(){
+    int m = 1;
+    while(scanf("%d",&n) && n) {
+
+        n *= 2;
+        for(i = 0; i < n; i++)
+            scanf("%s %d %d",a,&x[i],&y[i]);
+        l = pow(2,n)-1;
+        r.clear();
+
+        printf("Case %d: %.2f\n",m++,solve(0,0));
+    }
+    return 0;
+}
+

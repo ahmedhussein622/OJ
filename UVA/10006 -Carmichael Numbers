@@ -1,0 +1,53 @@
+
+#include<stdio.h>
+#include<bitset>
+#include<algorithm>
+#include<vector>
+using namespace std;
+bitset<65010> pr;
+vector<int>primes;
+long long i,j,m,n,a,b;
+
+void gen(){
+    pr.set();
+    for(i = 2; i < 65001; i++){
+        if(!pr[i])
+            continue;
+        primes.push_back(i);
+        for(j = i*i ; j < 65001; j+=i)
+            pr[j] = 0;
+    }
+}
+
+int solve(int x){
+    n = x;
+    i = 0;j = primes[i];
+
+    while(n != 1 && j <= n){
+        a = 0;
+        while(n%j == 0){
+            if(a || (x-1)%(j-1) != 0)
+                return 0;
+            a = 1;
+            n/=j;
+        }
+        j = primes[++i];
+    }
+    if(n == x)
+        return 0;
+    return 1;
+}
+
+int main() {
+    gen();
+
+    while(scanf("%lld",&b) && b){
+
+        if( find(primes.begin(),primes.end(),b) == primes.end() && solve(b))
+            printf("The number %lld is a Carmichael number.\n",b);
+        else
+            printf("%lld is normal.\n",b);
+    }
+    return 0;
+}
+

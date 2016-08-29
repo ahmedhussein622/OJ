@@ -1,0 +1,46 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+int main ( ) {
+
+    int n,m,i,j,x,y,counter;
+    char p[100][100];
+    char c,b[101];
+    counter = 0;
+    while (scanf("%d %d\n",&n,&m) && n && m) {
+            if (counter)
+                printf("\n");
+            for (i = 0; i < n; i++)
+                for (j = 0; j < m; j++)
+                        p[i][j] = '0';
+
+            for (i = 0; i < n; i++){
+                gets(b);
+                for (j = 0; j < m; j++){
+                    c = b[j];
+                    if (c != '*')
+                        continue;
+                    p[i][j] ='*';
+                    for (x = i-1; x <= i+1; x++)
+                        for (y = j-1; y <= j+1 ;y++)
+                            if (x>=0&&y>=0&&x<n&&y<m&&p[x][y]!='*')
+                                p[x][y]++;
+                }
+            }
+
+            counter ++;
+            printf("Field #%d:\n",counter);
+            for (i = 0; i < n; i++) {
+                for (j = 0; j < m; j++){
+                    printf("%c",p[i][j]);
+                }
+                printf("\n");
+            }
+    }
+
+
+    return 0;
+}

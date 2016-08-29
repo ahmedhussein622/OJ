@@ -1,0 +1,86 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	static int N,n,ans,max;
+	static int tracks[] = new int[40];
+	
+	public static void main(String[] args) throws Exception {
+		
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		StringTokenizer token;
+		int i,j;
+		String input;
+		input = in.readLine();
+		
+		while(input != null) {
+			
+			token = new StringTokenizer(input);
+			N = Integer.parseInt(token.nextToken());
+			n = Integer.parseInt(token.nextToken());
+			for(i = 0; i < n; i++)
+				tracks[i] = Integer.parseInt(token.nextToken());
+			solve();
+			
+			for( i = 0; i < n; i++) {
+				if((ans & 1 << i) != 0) {
+					out.print(tracks[i]+" ");
+				}
+			}
+			
+			out.println("sum:"+max);
+			input = in.readLine();
+		}
+		
+		out.flush();
+	}// end of main
+	
+	
+	
+	static void solve() {
+		
+		ans = 0;
+		max = 0;
+		int i,j,temp;
+		int s = (int)Math.pow(2, n);
+		int x = 1;
+		for(i = 0; i < s; i++) {
+			temp = 0;
+			for(j = 0; j < n; j++) {
+				if((x << j & i ) != 0) {
+					temp += tracks[j];
+				}
+			}
+			if(temp > max && temp <= N) {
+				max = temp;
+				ans = i;
+			}
+		}
+		
+	}// end of solve
+	
+	
+	
+	
+	
+}// end of class

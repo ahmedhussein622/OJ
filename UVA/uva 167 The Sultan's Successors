@@ -1,0 +1,97 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	static int b[] = new int[8];
+	static int valid[][] = new int[92][8];
+	static int number;
+	
+	public static void main(String[] args) throws Exception {
+		
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		number = 0;
+		solve(0);
+		
+		int n,i,j,max,k;
+		int board[][] = new int[8][8];
+		StringTokenizer token;
+		n = Integer.parseInt(in.readLine());
+		
+		while(n-- != 0) {
+			
+			
+			for(i = 0; i < 8 ;i++) {
+				token = new StringTokenizer(in.readLine());
+				for(j = 0; j < 8; j++) {
+					k = Integer.parseInt(token.nextToken());
+					board[i][j] = k;
+				}
+			}
+			
+			max =  -1;
+			for(i = 0; i < 92; i++) {
+				k = 0;
+				for(j = 0; j < 8; j++) {
+					k += board[valid[i][j]][j];
+				}
+				max = Math.max(max, k);
+			}
+			
+			String r = max+"";
+			j = r.length();
+			for(i = 0; i < 5 - j; i++)
+				r = " "+r;
+			out.println(r);
+		}
+		
+		
+		in.close();
+		out.flush();
+		
+	}// end of main
+	
+	
+	static void solve(int index) {
+		
+		int i;
+		if(index == 8) {
+			for(i = 0 ; i < 8; i++)
+				valid[number][i] = b[i];
+			number++;
+		}
+		
+		
+		int j;
+		loop : for(i = 0; i < 8; i++) {
+			for(j = 0; j < index; j++) {
+				if(b[j] == i ||(Math.abs(b[j] - i)== Math.abs(j-index)))
+					continue loop;
+			}
+			b[index] = i;
+			solve(index+1);
+		}
+		
+		 
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+}// end of class

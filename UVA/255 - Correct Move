@@ -1,0 +1,126 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.text.TabExpander;
+
+
+
+public class Main {
+	
+	
+	public static void main(String[] args) throws Exception {
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		StringTokenizer token;
+		String input;
+		input = " ";
+		int xk,yk,xq,yq,xn,yn;
+		int a,b,c,r;
+		int dx[] ={1,-1,0,0};
+		int dy[] ={0,0,1,-1};
+		r = 1;
+		
+		while(true) {
+			input = in.readLine();
+			if(input == null)
+				break;
+			token =  new StringTokenizer(input);
+			a = Integer.parseInt(token.nextToken());
+			b = Integer.parseInt(token.nextToken());
+			c = Integer.parseInt(token.nextToken());
+			
+			xk = a % 8;
+			yk = a / 8;
+			
+			xq = b % 8;
+			yq = b / 8;
+			
+			xn = c % 8;
+			yn = c / 8;
+			
+			if(xk == xq && yk == yq) {
+				out.println("Illegal state");
+				continue;
+			}
+			
+			if((xq != xn && yq != yn)||(xq == xn && yq == yn)) {
+				out.println("Illegal move");
+				continue;
+			}
+			if(xq == xn && xq == xk) {
+				a = Math.max(yq, yn);
+				b = Math.min(yq, yn);
+				if(yk <= a && yk >= b) {
+					out.println("Illegal move");
+					continue;
+				}
+			}
+			
+			if(yq == yn && yq == yk) {
+				a = Math.max(xq, xn);
+				b = Math.min(xq, xn);
+				if(xk <= a && xk >= b) {
+					out.println("Illegal move");
+					continue;
+				}
+			}
+			
+			r = 0;
+			
+			for(int i = 0; i < 4 && r == 0;i ++) {
+				
+				if(xk+dx[i] == xn && yk+dy[i] == yn  && r == 0) {
+					r = 1;
+				}
+				
+			}
+			
+			if(r ==  1) {
+				out.println("Move not allowed");
+				continue;
+			}
+			
+			r = 0;
+			if(xk == 0 && yk == 0 && xn == 1 && yn == 1)
+				r = 1;
+			if(xk == 7 && yk == 7 && xn == 6 && yn == 6)
+				r = 1;
+			if(xk == 7 && yk == 0 && xn == 6 && yn == 1)
+				r = 1;
+			if(xk == 0 && yk == 7 && xn == 1 && yn == 6)
+				r = 1;
+			
+			if(r == 1) {
+				out.println("Stop");
+			}
+			else {
+				out.println("Continue");
+			}
+		}
+		
+	
+		out.flush();
+	}
+	
+	
+	
+	
+	
+	
+}

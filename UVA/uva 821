@@ -1,0 +1,111 @@
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <algorithm>
+#include <map>
+#define Infinity 9999999
+
+using namespace std;
+map<int,int> maper;
+
+int dp[110][110][110];
+int n;
+
+int comb(int a, int r) {
+
+
+    if(a < 0 || a < r)
+        return 0;
+
+    if(a == r || r == 0)
+        return 1;
+
+    return comb(a-1,r-1)+comb(a-1,r);
+}
+
+double APSP() {
+
+
+    for(int k = 1; k <= n; k++) {
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= n; j++) {
+                dp[i][j][k] = min(dp[i][j][k-1],dp[i][k][k-1]+dp[k][j][k-1]);
+            }
+        }
+
+    }
+
+    double ans = 0;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= n; j++) {
+            ans += dp[i][j][n];
+        }
+    }
+
+    return ans/(comb(n, 2) * 2);
+
+}
+
+
+
+
+int main() {
+
+    int a,b,i,j;
+    int co = 1;
+    while(scanf("%d %d",&a, &b) && a) {
+
+        for(i = 0; i < 110; i++) {
+            for(j = 0;j < 110; j++) {
+                dp[i][j][0] = Infinity;
+            }
+        }
+
+        for(i = 0; i < 110; i++)
+            dp[i][i][0] = 0;
+
+
+        maper.clear();
+        n = 1;
+        while(a != 0) {
+            if(maper.find(a) == maper.end())
+                maper[a] = n++;
+
+            if(maper.find(b) == maper.end())
+                maper[b] = n++;
+
+            dp[maper[a]][maper[b]][0] = 1;
+            scanf("%d %d",&a,&b);
+        }
+        n--;
+
+
+        double ans = APSP();
+        printf("Case %d: average length between pages = %.3lf clicks\n",co++,ans);
+    }
+
+
+
+
+
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

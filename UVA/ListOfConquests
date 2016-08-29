@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<map>
+
+using namespace std;
+
+bool compare (char*a,char*b) {
+
+    return strcmp(a,b) < 0;
+}
+
+int main ( ) {
+
+    int n;
+    char *c,b[75];
+    map<char*,int,bool(*)(char*,char*)> m(compare);
+    scanf("%d\n",&n);
+    while(n--) {
+
+        c = new char[75];
+        scanf("%s",c);
+        gets(b);
+
+        if(m.find(c) == m.end())
+            m[c] = 1;
+        else
+            m[c]++;
+    }
+
+    map<char*,int>::iterator it = m.begin();
+
+    while(it != m.end()){
+
+        printf("%s %d\n",it->first,it->second);
+        it++;
+    }
+
+    return 0;
+}
+

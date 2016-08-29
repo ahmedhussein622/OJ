@@ -1,0 +1,99 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	static int board[] = new int[8];
+	static PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+	static int r,c,number;
+	
+	public static void main(String[] args) throws Exception {
+		
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		StringTokenizer token;
+		int n;
+		n = Integer.parseInt(in.readLine());
+		
+		while(n-- != 0) {
+			in.readLine();
+			token =  new StringTokenizer(in.readLine());
+			r = Integer.parseInt(token.nextToken());
+			c = Integer.parseInt(token.nextToken());
+			r--;
+			c--;
+			board[c] = r;
+			
+			out.println("SOLN       COLUMN\n #      1 2 3 4 5 6 7 8\n");
+			number = 1;
+			solve(0);
+			if(n != 0)
+				out.println();
+		}
+		
+		in.close();
+		out.flush();
+	}// end of main
+	
+	
+	static void solve(int index) {
+		
+		if(index == 8){ 
+			if(number < 10)
+				out.printf(" %d      ",number);
+			else
+				out.printf("%d      ",number);
+			number ++;
+			for(int i = 0; i < 7; i++)
+				out.printf("%d ",board[i]+1);
+			out.printf("%d\n",board[7]+1);
+			return;
+		}
+		
+		else if(index == c) {
+			solve(index+1);
+			return;
+		}
+		
+		int i,j;
+		
+		loop : for(i = 0; i < 8; i++) {
+			
+				for(j = 0; j < index ; j++) {
+					if(board[j] == i || Math.abs(board[j] - i) ==  Math.abs(j - index)) {
+						continue loop;
+					}
+				}
+			
+				if(r == i || Math.abs(r-i) == Math.abs(c - index)) {
+					continue;
+				}
+				
+				board[index] = i;
+				solve(index+1);
+				
+		}
+		
+		
+		
+	}// end of solve
+	
+	
+	
+	
+	
+	
+	
+}// end of class

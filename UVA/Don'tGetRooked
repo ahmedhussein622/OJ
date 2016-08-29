@@ -1,0 +1,75 @@
+
+
+#include<stdio.h>
+
+int k,maximum,m,n,l;
+char a[4][4];
+
+
+void solve (int x, int y) {
+
+    if (x == k-1 && y == k) {
+        l = 0;
+        for (m = 0; m < k; m++)
+            for (n = 0 ; n < k; n++)
+                if (a[m][n] == 'o')
+                    l++;
+        if (l > maximum)
+            maximum = l;
+        return;
+    }
+
+    if (y == k){
+        solve(x+1,0);
+        return;
+    }
+
+    if (a[x][y] == 'X') {
+        solve(x,y+1);
+        return;
+    }
+    solve(x,y+1);
+
+    l = 1;
+    for (m = x+1 ;l && m < k && a[m][y]!='X'; m++)
+        if (a[m][y] == 'o')
+            l = 0;
+    for (m = x-1 ;l && m >= 0 && a[m][y]!='X'; m--)
+        if (a[m][y] == 'o')
+            l = 0;
+    for (m = y+1 ;l && m < k && a[x][m]!='X'; m++)
+        if (a[x][m] == 'o')
+            l = 0;
+    for (m = y-1 ;l && m >= 0 && a[x][m]!='X'; m--)
+        if (a[x][m] == 'o')
+            l = 0;
+
+    if (l) {
+        a[x][y] = 'o';
+        solve(x,y+1);
+        a[x][y] = '.';
+    }
+}
+
+
+int main () {
+
+    int i,j;
+
+    while (scanf("%d\n",&k) && k) {
+
+        for (i = 0; i < k; i++) {
+            for (j = 0; j < k; j++)
+                scanf("%c",&a[i][j]);
+            scanf("\n");
+        }
+
+        maximum = -1;
+        solve(0,0);
+        printf("%d\n",maximum);
+    }
+
+
+    return 0 ;
+}
+

@@ -1,0 +1,114 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <map>
+#include <tuple>
+
+
+using namespace std;
+
+
+int n,l,g;
+int input[1000];
+map<tuple<int, int, int> , pair<int,int> > dp;
+
+int solve(int id, int left, int right) {
+
+
+
+    if(id == n)
+        return 0;
+
+    tuple <int, int ,int> a(id, left, right);
+    tuple <int, int, int> gg(id,right,left);
+    if(dp.find(a) != dp.end()) {
+        return dp[a].first;
+    }
+    else if(dp.find(gg) != dp.end()) {
+        return dp[gg].first;
+    }
+
+
+    int ans = 0;
+    int loc = 0;
+    if(left + input[id] <= l) {
+        ans = solve(id+1,left+input[id], right)+1;
+        loc = 1;
+    }
+
+    if(right + input[id] <= l) {
+        int k = solve(id+1, left, right+input[id])+1;
+        if(ans < k) {
+            ans = k;
+            loc = 2;
+        }
+
+    }
+
+
+
+    pair<int,int> b(ans,loc);
+    dp[a] = b;
+
+    return ans;
+
+}
+
+int main()
+{
+
+    int tc;
+    scanf("%d",&tc);
+    for(int k = 0;k < tc; k++) {
+
+        scanf("%d",&l);
+        l *= 100;
+        n = 0;
+        while(scanf("%d",&g) && g) {
+            input[n++] = g;
+        }
+
+
+        if(k != 0)
+            printf("\n");
+
+        if(n == 0) {
+            printf("0\n");
+            continue;
+        }
+
+        dp.clear();
+        int ans = solve(0,0,0);
+        printf("%d\n",ans);
+
+        tuple<int,int,int>tmp(0,0,0);
+         for(int i = 0; i < ans; i++) {
+            if(dp[tmp].second == 1) {
+                printf("port\n");
+                tuple<int,int,int> hh(i+1,get<1>(tmp)+input[i],get<2>(tmp));
+                tmp = hh;
+            }
+            else {
+                printf("starboard\n");
+                tuple<int,int,int> hh(i+1,get<1>(tmp),get<2>(tmp)+input[i]);
+                tmp = hh;
+            }
+         }
+
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+
+#include<stdio.h>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+int main(){
+
+ int p[] = {2,3,5,7,11,13,17,31,37,71,73,79,97,113,131,199,311,337,373,733,919,991};
+    vector<int>primes(p,p+22);
+    int n,m,i,j,x,y;
+    while(scanf("%d",&n) && n){
+
+        if(n >990){
+            printf("0\n");
+            continue;
+        }
+        x = 1;
+        while(x <= n)
+            x*=10;
+        y = lower_bound(primes.begin(),primes.end(),n) - primes.begin();
+        if(primes[y] == n)
+            y++;
+        y = primes[y];
+        if( y < x)
+            printf("%d\n",y);
+        else
+            printf("0\n");
+    }
+
+
+
+    return 0;
+}
+
+

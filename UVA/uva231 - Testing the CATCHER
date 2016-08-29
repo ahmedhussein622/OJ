@@ -1,0 +1,51 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+int a[1000000],b[1000000],n,m,i,j;
+
+int solve(int x) {
+
+    if(b[x] != -1)
+        return b[x];
+
+    int s,p;
+    s = 0;
+    for(p = 0; p < x; p++) {
+        if(a[p] < a[x])
+            continue;
+        s = max(s,solve(p));
+    }
+    s++;
+    b[x] = s;
+    return s;
+}
+
+
+
+int main() {
+
+    int k = 1;
+
+    while(scanf("%d",&j) && j != -1) {
+
+        a[0] = j;n =1;
+        while(scanf("%d",&j) && j!= -1)
+            a[n++] = j;
+
+        memset(b,-1, sizeof(int)*(n+1));
+        b[0] = 1;
+        j = 0;
+        for(i = n-1; i > -1; i--)
+            j = max(j,solve(i));
+        if(k != 1)
+            printf("\n");
+        printf("Test #%d:\n  maximum possible interceptions: %d\n",k++,j);
+    }
+
+
+    return 0;
+}
+

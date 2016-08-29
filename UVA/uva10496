@@ -1,0 +1,59 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<bitset>
+
+using namespace std;
+
+int nb,k;
+int xs[10],ys[10];
+bitset<10>b;
+int minimum;
+
+void solve(int prev,int l, int sum){
+
+    if(l == 0){
+        k = sum + abs(xs[0] - xs[prev]) + abs(ys[0] - ys[prev]);
+        if(k < minimum)
+            minimum = k;
+        return;
+    }
+
+    for(int i = 1; i <= nb; i++){
+        if(b[i]){
+             k = sum + abs(xs[i] - xs[prev]) + abs(ys[i] - ys[prev]);
+             if (k >= minimum)
+                continue;
+             b[i] = 0;
+             solve(i,l-1,k);
+             b[i] = 1;
+        }
+    }
+
+}
+
+int main(){
+
+    int n,i,x,y;
+    scanf("%d",&n);
+
+    while(n--){
+
+        scanf("%d %d",&x,&y);
+        scanf("%d %d",&x,&y);
+        xs[0] = x;
+        ys[0] = y;
+        scanf("%d",&nb);
+        for(i = 1; i <= nb ; i++)
+            scanf("%d %d",&xs[i],&ys[i]);
+
+        minimum = 10000000;
+        b.set();
+        solve(0,nb,0);
+        printf("The shortest path has length %d\n",minimum);
+    }
+
+
+    return 0;
+}
+

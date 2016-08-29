@@ -1,0 +1,140 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+using namespace std;
+
+
+int v[50], w[50],tmp[50];
+int n,t,we;
+int dp[35][1010];
+
+
+int solve(int id, int time) {
+
+
+    if(id == n)
+        return 0;
+
+    if(dp[id][time] != -1)
+        return dp[id][time];
+
+   int ans = solve(id+1, time);
+   if(time - w[id] >= 0)
+        ans = max(ans, solve(id+1, time - w[id])+v[id]);
+
+    dp[id][time] = ans;
+
+    return ans;
+}
+
+int coun;
+void counter (int id, int time,int value) {
+
+
+    if(id == n-1) {
+        if(value == v[id]) {
+           coun++;
+        }
+        return;
+    }
+
+    if(dp[id+1][time] == value) {
+        counter(id+1,time,value);
+    }
+    else {
+        coun++;
+        counter(id+1,time-w[id],value-v[id]);
+
+    }
+
+
+}
+
+void printSolution(int id, int time,int value) {
+
+
+    if(id == n-1) {
+        if(value == v[id]) {
+            printf("%d %d\n",tmp[id],v[id]);
+        }
+        return;
+    }
+
+    if(dp[id+1][time] == value) {
+        printSolution(id+1,time,value);
+    }
+    else {
+        printf("%d %d\n",tmp[id],v[id]);
+        printSolution(id+1,time-w[id],value-v[id]);
+
+    }
+
+
+}
+
+int main()
+{
+
+        bool f = false;
+
+		while( scanf("%d %d",&t,&we) != EOF){
+
+            scanf("%d",&n);
+
+			for(int i = 0; i < n; i++) {
+                scanf("%d %d",tmp+i,v+i);
+                w[i] = tmp[i]*3*we;
+            }
+
+
+            for(int i = 0; i < n; i++)
+                memset(dp[i],-1,sizeof(int)*(t+1));
+
+
+            int ans = solve(0, t);
+
+            if(f) {
+                printf("\n");
+            }
+            else
+                f = true;
+
+            printf("%d\n",ans);
+            coun = 0;
+            counter(0,t,ans);
+            printf("%d\n",coun);
+            printSolution(0,t,ans);
+        }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,77 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Hashtable;
+
+
+public class Main {
+
+	
+	static int input[];
+	static int n;
+	static HashSet<Point> dp;
+	static String fileName = "input.txt";
+	
+	public static void main(String[] args) throws Exception {
+//		BufferedReader in = new BufferedReader(new FileReader(new File(fileName)));
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		
+		input = new int[500];
+		dp = new HashSet<>();
+		
+		int tc = Integer.parseInt(in.readLine());
+		String l[];
+		for(int i = 0; i < tc; i++) {
+			l = in.readLine().split(" ");
+			n = l.length;
+			for(int j = 0;j < n; j++)
+				input[j] = Integer.parseInt(l[j]);
+			dp.clear();
+			if(solve(0,0))
+				System.out.println("YES");
+			else
+				System.out.println("NO");
+		}
+		
+	}
+
+	
+	public static boolean solve(int index, int diff) {
+			
+		if(index == n) {
+			return diff == 0;
+		}
+		
+		Point p = new Point(index, diff);
+		if(dp.contains(p))
+			return false;
+		
+		boolean b = solve(index+1,diff+input[index]);
+		if(b)
+			return true;
+		
+		b = solve(index+1,Math.abs(diff-input[index]));
+		
+		if(b)
+			return true;
+		
+		dp.add(p);
+		return false;
+		
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+

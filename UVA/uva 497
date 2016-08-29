@@ -1,0 +1,107 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Main {
+
+	static String fileName = "input.txt";
+	static int input[];
+	static int dp[];
+	static int count;
+	static int maximum;
+	static int parent[];
+	static int tc;
+
+	public static void main(String[] args) throws Exception {
+//		BufferedReader in = new BufferedReader(new FileReader(new File(fileName)));
+		 BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+		int mm = 1000000;
+		input = new int[mm];
+		dp = new int[mm];
+		parent = new int[mm];
+
+		tc = Integer.parseInt(in.readLine());
+		in.readLine();
+		int c, i, j, m, n, maximum, mLoc;
+		String s;
+		for (int k = 1; k <= tc; k++) {
+			s = in.readLine();
+			if (s == null)
+				break;
+
+			c = 0;
+			while (true) {
+				if (s == null || s.length() == 0)
+					break;
+
+				m = Integer.parseInt(s);
+				input[c++] = m;
+				s = in.readLine();
+			}
+			
+			if(c == 0) {
+				if (k != 1)
+					System.out.println();
+				
+				System.out.print("Max hits: 0\n");
+				continue;
+			}
+			
+			Arrays.fill(parent, 0, c+1, -1);
+			dp[0] = 1;
+			maximum = 1;
+			mLoc = 0;
+			for (i = 1; i < c; i++) {
+				n = 1;
+				for (j = 0; j < i; j++) {
+					if (input[i] > input[j] && n < dp[j]+1) {
+						n = dp[j] + 1;
+						parent[i] = j;
+					}
+				}
+				if (maximum < n) {
+					maximum = n;
+					mLoc = i;
+				}
+				dp[i] = n;
+				
+			}
+			
+	
+//			for(i = 0; i < c; i++) {
+//				System.out.println(input[i]+" "+dp[i]+" "+parent[i]);
+//			}
+			if (k != 1)
+				System.out.println();
+			
+			System.out.printf("Max hits: %d\n", maximum);
+			if(parent[mLoc] != -1)
+				print(parent[mLoc]);
+			System.out.println(input[mLoc]);
+		}
+
+	}
+
+	static void print(int index) {
+
+		if (parent[index] != -1) {
+			print(parent[index]);
+		}
+		System.out.printf("%d\n", input[index]);
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+

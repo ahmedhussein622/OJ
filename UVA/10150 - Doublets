@@ -1,0 +1,155 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	static String[] nodes = new String[25145];
+	static ArrayList< ArrayList<Integer> > edges = new  ArrayList< ArrayList<Integer> > ();
+	static int n,s,t;
+	static boolean[] visited = new boolean[25145];
+	static int[] parent = new int[25145];
+	public static void main(String[] args) throws Exception {
+
+		
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		
+		
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
+		int i;
+		String[] split;
+		
+		for(i = 0; i < 25145 ;i++)
+			edges.add(new ArrayList<Integer>());
+		String input = in.readLine();
+		n = 0;
+		
+		while(input.length() != 0) {// build the graph
+			nodes[n] = input;
+			for(i = 0; i < n; i++) {
+				if(differenceOne(input, nodes[i])) {
+					edges.get(n).add(i);
+					edges.get(i).add(n);
+				}
+			}
+			n++;
+			input = in.readLine();
+		}// done building
+		
+		boolean first = true;
+		input = in.readLine();
+		while(input != null && input.length() != 0) {
+			if(!first) {
+				out.println();
+			}
+			split = input.split(" ");
+			
+			s = -1;
+			t = -1;
+			for(i = 0; i < n && (s == -1 || t == -1); i++) {
+				if(nodes[i].equals(split[0]))
+					s = i;
+				if(nodes[i].equals(split[1]))
+					t = i;
+			}
+			
+			// BFS here
+			if(t !=  s){
+				BFS();
+				if(parent[t] == -1) {
+					out.println("No solution.");
+				}
+				else
+					printer(t, out);
+			}
+			else {
+				out.println(nodes[t]);
+			}
+			input = in.readLine();
+			first = false;
+		}// end of while
+		
+		
+		out.flush();
+	}// end of main
+	
+	
+	static void printer(int x,PrintWriter out) {
+		
+		if(x == -1)
+			return;
+		printer(parent[x], out);
+		out.println(nodes[x]);
+		
+	}
+	
+	
+	static void BFS() {
+		
+		int i,u,v;
+		for(i = 0; i < n; i++)
+			visited[i] = false;
+		queue.clear();
+		visited[s] = true;
+		queue.add(s);
+		parent[s] = -1;
+		parent[t] = -1;
+		
+		while(!queue.isEmpty() && !visited[t]) {
+			
+			 u = queue.poll();
+			 visited[u] = true;
+			 
+			 for(i = 0; i < edges.get(u).size();i++) {
+				 v = edges.get(u).get(i);
+				 if(!visited[v]) {
+					 visited[v] = true;
+					 parent[v] = u;
+					 queue.add(v);
+				 }
+				 
+			 }
+			 
+			 
+		}// end of while
+		
+	}
+	
+	
+	
+	static Queue<Integer> queue = new LinkedList<Integer>();
+	
+	
+	public static boolean differenceOne(String s1, String s2) {
+		
+		if(s1.length() != s2.length())
+			return false;
+		
+		int count = 0;
+		
+		for(int i = 0; i < s1.length() && count < 2; i++) {
+			if(s1.charAt(i) != s2.charAt(i))
+				count++;
+		}
+		
+		if(count == 1)
+			return true;
+		
+		return false;
+	}
+	
+}

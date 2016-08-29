@@ -1,0 +1,81 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	static int k;
+	static int x[] = new int[40];
+	
+	static PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+	
+	public static void main(String[] args) throws Exception {
+		
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		StringTokenizer token;
+		int i;
+		boolean first = true;
+		
+		while(true) {
+			token = new StringTokenizer(in.readLine());
+			k = Integer.parseInt(token.nextToken());
+			if(k == 0)
+				break;
+			
+			for(i = 0; i < k ; i++)
+				x[i] = Integer.parseInt(token.nextToken());
+			
+			if(first)
+				first = false;
+			else
+				out.println();
+			solve(0, "",0);		
+			
+		}// end of while
+		
+	
+		in.close();
+		out.flush();
+	}//end of main
+	
+	
+	static void solve(int location, String s, int p) {
+		
+		if(p == 6) {
+			out.println(s.substring(0, s.length()-1));
+			return;
+		}
+		
+		solve(location+1, s+x[location]+" ",p+1);
+		
+		if(k - location > 6 - p) {
+			solve(location+1, s,p);
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+}// end of class

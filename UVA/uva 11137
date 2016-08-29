@@ -1,0 +1,41 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+
+public class Main {
+
+	static String fileName = "input.txt";
+
+	public static void main(String[] args) throws Exception {
+//		BufferedReader in = new BufferedReader(new FileReader(new File(fileName)));
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		
+		long  dp[] = new long[10010];
+	    dp[0] = 1;
+	    int coin;
+	    for(int i = 1; i < 22; i++) {
+	        coin = (int) Math.pow(i, 3);
+	        for(int j = coin; j < 10010; j++)
+	            dp[j] += dp[j-coin];
+
+	    }
+
+	    int m;
+	    String s = in.readLine();
+	    while(s != null && s.length() != 0) {
+	    	m = Integer.parseInt(s.trim());
+	       System.out.println(dp[m]);
+	       s = in.readLine();
+	    }
+ 
+	}
+	
+}
+

@@ -1,0 +1,51 @@
+
+
+#include<stdio.h>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+
+int main (){
+
+    int n,m,i,j,cost    ;
+    vector<int> head,knight;
+    vector<int> ::iterator x,y;
+
+    while(scanf("%d %d",&n,&m) && (n||m)){
+        head.clear();knight.clear();
+        for(i = 0; i < n; i++){
+            scanf("%d",&j);
+            head.push_back(j);
+        }
+        for(i = 0; i < m; i++){
+            scanf("%d",&j);
+            knight.push_back(j);
+        }
+
+        if(m < n){
+            printf("Loowater is doomed!\n");
+            continue;
+        }
+
+        sort(head.begin(),head.begin()+n);
+        sort(knight.begin(),knight.begin()+m);
+        cost = 0 ;j = 0;
+        for(x = head.begin(); x != head.end(); x++){
+
+            y = lower_bound(knight.begin(),knight.end(),*x);
+            if(y == knight.end()){
+                j = 1; break;
+            }
+            cost += * y;
+            knight.erase(y);
+        }
+        if(j)
+            printf("Loowater is doomed!\n");
+        else
+            printf("%d\n",cost);
+    }
+
+    return 0;
+}
+

@@ -1,0 +1,133 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <map>
+#include <cmath>
+#include <string.h>
+#define Infinity 99999999
+
+
+using namespace std;
+char a[100],b[100];
+int n,m,indx,counter;
+int dp[90][90];
+char cho[90][90];
+
+void solve() {
+
+    for(int i = 1; i <= n;i++) {
+        for(int j = 1; j <= m; j++) {
+            dp[i][j] = min(dp[i-1][j-1] + (a[i] != b[j]), min(dp[i-1][j],dp[i][j-1])+1);
+
+            if(dp[i][j] == dp[i-1][j]+1) {
+                cho[i][j] = 'D';
+            }
+            else if(dp[i][j] == dp[i][j-1]+1) {
+                cho[i][j] = 'I';
+            }
+            else if(a[i] != b[j])
+                cho[i][j] = 'C';
+            else cho[i][j] = 'M';
+
+        }
+    }
+
+
+}
+
+
+void printer(int i, int j) {
+
+    if(i == 0 && j == 0)
+        return ;
+
+    if(cho[i][j] == 'M') {
+        printer(i-1,j-1);
+        indx++;
+        return;
+    }
+
+    switch(cho[i][j]) {
+        case 'C':   printer(i-1,j-1);
+                    printf("%d Replace %d,%c\n",counter++,indx++,b[j]);
+                    break;
+        case 'D':
+                    printer(i-1,j);
+                    printf("%d Delete %d\n",counter++,indx);
+                    break;
+        case 'I':   printer(i,j-1);
+                    printf("%d Insert %d,%c\n",counter++,indx++,b[j]);
+
+    }
+
+}
+
+
+
+
+
+int main() {
+
+
+    for(int i = 1; i < 90;i++){
+        dp[i][0] = i;
+        cho[i][0] = 'D';
+    }
+
+    for(int i = 1; i < 90;i++) {
+        dp[0][i] = i;
+        cho[0][i] = 'I';
+    }
+
+    dp[0][0] = 0;
+    cho[0][0] = 'M';
+
+    a[0] = ' ';
+    b[0] = ' ';
+    bool f = true;
+    while(gets(a+1)) {
+        gets(b+1);
+        n = strlen(a)-1;
+        m = strlen(b)-1;
+
+        solve();
+
+
+        if(f)
+            f = false;
+        else
+            printf("\n");
+
+         printf("%d\n",dp[n][m]);
+
+         counter = 1;
+         indx = 1;
+         printer(n, m);
+
+
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

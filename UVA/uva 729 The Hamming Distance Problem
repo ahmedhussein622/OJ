@@ -1,0 +1,75 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+	
+	static int testCases;
+	static int n,h;
+	static PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+	
+	public static void main(String[] args) throws Exception {
+		
+//		BufferedWriter out = new BufferedWriter(new FileWriter(new File("output.txt")));
+		
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedReader in = new BufferedReader(new FileReader("test.txt"));
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		StringTokenizer token;
+		testCases = Integer.parseInt(in.readLine());
+		boolean first = true;
+		
+		while(testCases-- != 0) {
+			
+			in.readLine();
+			token = new StringTokenizer(in.readLine());
+			n = Integer.parseInt(token.nextToken());
+			h = Integer.parseInt(token.nextToken());
+			if(first)
+				first = false;
+			else
+				out.println();
+			
+			solve(0, h, "");
+		}
+		
+		out.flush();
+		
+	}// end of main
+	
+	
+	static void solve(int location , int remainingOnes,String s) {
+		
+		if(location == n) {
+			out.println(s);
+		}
+		
+		if(n - location > remainingOnes) {
+			solve(location+1, remainingOnes, s+"0");
+		}
+		
+		if(remainingOnes > 0) {
+			solve(location+1, remainingOnes-1, s+"1");
+		}
+		
+	}
+
+	
+	
+	
+}// end of class
